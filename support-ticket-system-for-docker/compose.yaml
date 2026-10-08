@@ -1,0 +1,33 @@
+services:
+
+  api:
+    build: .
+    container_name: support-ticket-api
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./src:/app/src
+    environment:
+      PORT: 3000
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: support_user
+      DB_PASSWORD: support_password
+      DB_NAME: support_ticket_db
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8.4
+    container_name: support-ticket-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: support_ticket_db
+      MYSQL_USER: support_user
+      MYSQL_PASSWORD: support_password
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+volumes:
+  mysql_data:
