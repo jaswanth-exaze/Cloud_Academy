@@ -1,20 +1,23 @@
 require("dotenv").config();
 const exprees = require("express");
-const pool = require("./config/db");
-
+const pool = require("./config/db")
 const app = exprees();
 
 const Port = process.env.PORT || 3000;
+
+const usersRoutes = require("./routes/users");
+const ticketsRoutes = require("./routes/tickets");
 
 app.use(exprees.json());
 
 app.get("/",(req,res)=>{
     res.json({
-        message:"Support Ticket System API is Running on local"
+        message:"Support Ticket System API is Running Docker "
     });
 });
+app.use("/api/users", usersRoutes);
+app.use("/api/tickets", ticketsRoutes);
 
-// Test PostgreSQL connection
 pool.query("SELECT NOW()")
     .then(result => {
         console.log("Database connected:", result.rows[0]);
